@@ -189,6 +189,6 @@ During the preliminary investigation, a number of projects were identified that 
 
 Support for the s y r i u s wallet is considered outside the scope of this project. A separate project can start the integration process as soon as phase 1 of this project is complete. Communication is done over USB or Bluetooth using an APDU. The APDU functions as a common interface between the Ledger and Host device and will be defined and implemented in phase 1.
 
-**Pillar/sentinal migration**
+**Pillar migration**
 
-Node operators have expressed the need to able to migrate their addresses. For complete support, node operators will need a way to move pillars/sentinels from one address to another without dismantling them (and re-burning QSR, etc). Without this all existing pillars/sentinels will forever stay in hot wallets.
+Node operators have expressed the need to able to migrate their addresses. For complete support, node operators will need a way to move pillars from one address to another without dismantling them (and re-burning QSR, etc). Without this all existing pillars will forever stay in hot wallets.
