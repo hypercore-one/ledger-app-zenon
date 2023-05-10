@@ -2,7 +2,7 @@
 
 _Zenon wallet application for Ledger_
 
-**URL**: https://github.com/hypercore-one/ledger-app-zenon/az.md
+**URL**: https://github.com/hypercore-one/ledger-app-zenon/az.md   
 **Team:** [HyperCore-One](https://github.com/hypercore-one)
 
 ## Introduction
