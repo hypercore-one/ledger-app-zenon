@@ -1,6 +1,6 @@
 # Ledger Zenon App
 
-_Zenon wallet application for Ledger_
+Zenon wallet application for Ledger
 
 **Team:** [HyperCore-One](https://github.com/hypercore-one)  
 **Repository**: [ledger-app-zenon](https://github.com/hypercore-one/ledger-app-zenon)  
