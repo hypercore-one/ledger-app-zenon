@@ -5,9 +5,6 @@
 #include <stdbool.h>
 #include <string.h>
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #include <cmocka.h>
 
 #include "bigint.h"
