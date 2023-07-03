@@ -56,17 +56,19 @@ int bigint_from_bytes(const uint8_t *in,
     }
 
     if (byteCount <= 4) {
-        out->sign = isNegative ? 0xffffffff : 0;
+        uint32_t sign = isNegative ? 0xffffffff : 0;
 
         if (isBigEndian) {
             for (int8_t i = 0; i < byteCount; i++) {
-                out->sign = (out->sign << 8) | in[i + offset];
+                sign = (sign << 8) | in[offset + i];
             }
         } else {
             for (int8_t i = byteCount - 1; i >= 0; i--) {
-                out->sign = (out->sign << 8) | in[i];
+                sign = (sign << 8) | in[offset + i];
             }
         }
+
+        out->sign = (int32_t) sign;
 
         if (out->sign < 0 && !isNegative) {
             // Int32 overflow
@@ -169,6 +171,7 @@ int bigint_format(const bigint_t in, int8_t decimals, char *out, size_t out_len)
     int8_t cuSrc = in.bits_len > 8 ? 8 : in.bits_len;
     // int8_t cuMax = cuSrc * 10 / 9 + 2;
     uint32_t rguDst[10];
+    memset(rguDst, 0, sizeof(rguDst));
     int8_t cuDst = 0;
 
     for (int8_t iuSrc = cuSrc; --iuSrc >= 0;) {
