@@ -41,7 +41,6 @@ These are the reviews that Ledger does, according per release type:
 | Security audit | | :heavy_check_mark: | :heavy_check_mark: |
 | Functional | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | Documentation | | | :heavy_check_mark: |
-| Functional | | | :heavy_check_mark: |
 | Marketing plan | | | :heavy_check_mark: |
 | Official Ledger<br/>Support | | | :heavy_check_mark: |
 
