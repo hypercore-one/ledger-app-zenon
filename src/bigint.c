@@ -16,7 +16,7 @@ int bigint_from_bytes(const uint8_t *in,
                       bigint_t *out) {
     bool isNegative = false;
     uint8_t offset = 0;
-    uint8_t byteCount = in_len >= 32 ? 32 : in_len;
+    int8_t byteCount = in_len >= 32 ? 32 : in_len;
 
     memset(out->bits, 0, sizeof(out->bits));
     out->bits_len = 0;
@@ -169,7 +169,6 @@ int bigint_format(const bigint_t in, int8_t decimals, char *out, size_t out_len)
     const uint8_t kcchBase = 9;
 
     int8_t cuSrc = in.bits_len > 8 ? 8 : in.bits_len;
-    // int8_t cuMax = cuSrc * 10 / 9 + 2;
     uint32_t rguDst[10];
     memset(rguDst, 0, sizeof(rguDst));
     int8_t cuDst = 0;
@@ -188,13 +187,7 @@ int bigint_format(const bigint_t in, int8_t decimals, char *out, size_t out_len)
         }
     }
 
-    // Each uint32_t contributes at most 9 digits to the decimal representation.
     int32_t cchMax = cuDst * kcchBase;
-
-    // We'll pass the rgch buffer to native code, which is going to treat it like a string of
-    // digits, so it needs to be null terminated. Let's ensure that we can allocate a buffer of that
-    // size.
-    // int32_t rgchBufSize = cchMax + 1;
 
     bool decimalFmt = decimals <= 0;
     if (decimalFmt) {
@@ -223,11 +216,6 @@ int bigint_format(const bigint_t in, int8_t decimals, char *out, size_t out_len)
     }
 
     if (!decimalFmt) {
-        // sign = true for negative and false for 0 and positive values
-        // bool sign = (in.sign < 0);
-        // The cut-off point to switch (G)eneral from (F)ixed-point to (E)xponential form
-        // int precision = 29;
-        // int scale = cchMax - ichDst;
         char tmp[83];
         memset(tmp, 0, sizeof(tmp));
 
