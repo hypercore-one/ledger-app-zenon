@@ -1,10 +1,9 @@
 # Ledger Zenon App
 
-Zenon wallet application for Ledger
+_Zenon wallet application for Ledger Nano S/X/SP and Stax_
 
-**Team:** [HyperCore-One](https://github.com/hypercore-one)  
-**Repository**: [ledger-app-zenon](https://github.com/hypercore-one/ledger-app-zenon)  
-**Proposal**: [Accelerator-Z](https://github.com/hypercore-one/ledger-app-zenon/blob/main/az.md)
+**URL**: https://github.com/hypercore-one/ledger-app-zenon/az.md
+**Team:** [HyperCore-One](https://github.com/hypercore-one)
 
 ## Introduction
 
@@ -42,7 +41,6 @@ These are the reviews that Ledger does, according per release type:
 | Security audit | | :heavy_check_mark: | :heavy_check_mark: |
 | Functional | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | Documentation | | | :heavy_check_mark: |
-| Functional | | | :heavy_check_mark: |
 | Marketing plan | | | :heavy_check_mark: |
 | Official Ledger<br/>Support | | | :heavy_check_mark: |
 
@@ -153,7 +151,7 @@ Ledger devices are Hierarchical Deterministic wallets, which means they can deri
 
 The second phase of this project focuses on the development of an audited developer mode release for all Ledger devices.
 
-This fase requires additional funding outside the scope of this project to fund the security audit(s). The exact costs of the security audit(s) are uncertain at this stage.
+This phase requires additional funding outside the scope of this project to fund the security audit(s). The exact costs of the security audit(s) are uncertain at this stage.
 
 This phase will be fully worked out when phase 1 is completed.
 
@@ -174,7 +172,7 @@ This phase will be fully worked out when phase 2 is completed.
 
 **How did you calculate your budget?** 
 
-The realization of phases 2 and 3 largely depends on third parties and the market. For example, phase 2 is subject to the requirement that Zenon must be in the top 600 coins on cointmarketcap to meet the requirements for the security audit; futhermore, the security audit(s) most be approved and funded in a separate AZ project.
+The realization of phases 2 and 3 largely depends on third parties and the market. For example, phase 2 is subject to the requirement that Zenon must be in the top 600 coins on cointmarketcap to meet the requirements for the security audit; furthermore, the security audit(s) most be approved and funded in a separate AZ project.
 
 The estimate is therefore based only on the total expected time I will need to complete Phase 1 and additional work that lead up to the security audit for Phase 2. The expected duration of phase 1 is expected to be between 6 and 8 months.
 
@@ -190,6 +188,6 @@ During the preliminary investigation, a number of projects were identified that 
 
 Support for the s y r i u s wallet is considered outside the scope of this project. A separate project can start the integration process as soon as phase 1 of this project is complete. Communication is done over USB or Bluetooth using an APDU. The APDU functions as a common interface between the Ledger and Host device and will be defined and implemented in phase 1.
 
-**Pillar migration**
+**Pillar/sentinel migration**
 
-Node operators have expressed the need to able to migrate their addresses. For complete support, node operators will need a way to move pillars from one address to another without dismantling them (and re-burning QSR, etc). Without this all existing pillars will forever stay in hot wallets.
+Node operators have expressed the need to able to migrate their addresses. For complete support, node operators will need a way to move pillars/sentinels from one address to another without dismantling them (and re-burning QSR, etc). Without this all existing pillars/sentinels will forever stay in hot wallets.
