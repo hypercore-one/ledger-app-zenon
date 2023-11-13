@@ -161,14 +161,14 @@ The following diagram shows a general overview of the development and submission
 
 ![dev-sub-flow](/assets/diagrams/dev-sub-flow.png)
 
-This phase aims to complete of the "app dev mode release" phase in the above diagram.
+This phase aims to complete the "app dev mode release" phase in the above diagram.
 
 Most of the release requirements have already been completed in phase 1, except for the following:
 
 - Legal Entity name
 - The App has been fully tested with a companion wallet (CLI or GUI)
 - Video of your application running on the Ledger device (for Ledger Nano only)
-- A link to the Companion Wallet
+- A link to the Companion Wallet  
   The wallet must give an option to verify the receiving address on a Ledger device. It should also have an affiliate link next to the “Connect with Ledger” option. You must provide either:
   - a link to the CLI repository, or
   - a link to the GUI running on Windows/MacOS/Linux (mandatory for Public release)
@@ -178,6 +178,7 @@ The application will be submitted once all requirements are met and until Ledger
 
 **Completion of Phase 2 will be measured by**
 
+- **Must have**: Companion Wallet integration (see [additional projects](#additional-projects-outside-the-scope-of-this-project))
 - **Must have**: Successfully complete "app dev mode release" phase.
 
 ## Phase 3 - Public release
@@ -197,7 +198,7 @@ This phase will be fully worked out when phase 2 is completed.
 
 The realization of phases 2 and 3 largely depends on third parties and the market. For example, phase 2 is subject to the requirement that Zenon must be in the top 600 coins on cointmarketcap to meet the requirements for the security audit; furthermore, the security audit(s) most be approved and funded in a separate AZ project.
 
-The estimate is therefore based only on the total expected time I will need to complete Phase 1 and additional work that lead up to the security audit for Phase 2. The expected duration of phase 1 is expected to be between 6 and 8 months.
+The estimate is therefore based only on the total expected time I will need to complete phase 1 and additional work that lead up to the security audit for phase 2. The expected duration of phase 1 is expected to be between 6 and 8 months.
 
 I've calculated a ZNN & QSR of 2 and 0,20 dollar, which covers about 52% of the actual time spend against a rate of 100 dollar per hour. The remaining hours are considered learning hours for my own personal development.
 
