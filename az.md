@@ -1,9 +1,9 @@
-# Ledger Zenon App
+# Zenon Ledger Embedded App
 
 _Zenon wallet application for Ledger Nano S/X/SP and Stax_
 
-**URL**: https://github.com/hypercore-one/ledger-app-zenon/az.md
-**Team:** [HyperCore-One](https://github.com/hypercore-one)
+**URL**: https://github.com/hypercore-one/ledger-app-zenon/az.md  
+**Team:** [HyperCore-One](https://github.com/hypercore-one)  
 
 ## Introduction
 
@@ -49,7 +49,7 @@ The Public release is subject to strict requirements and goes through several st
 
 The security audit process should be started only when the Embedded App is ready for all Ledger devices (Ledger Nano S, S Plus and Stax). A full list of all release steps can be found under [user case 4](https://developers.ledger.com/docs/embedded-app/case4/).
 
-Ledger offers developers several use cases for developing an Embedded App. Zenon has an unique architecture with its own Token Standard. Zenon is not an ETH clone, and cannot be derived from an existing app. This means that use cases 3 and 5 will be dropped. External development is an option if development proves to be too challenging for community developers. A possible outsourcing would mean that the person concerned would first have to learn more about the Zenon architecture, which would probably entail extra unnecessary costs. This project however aimes to apply a combination of use cases 2 and 4.
+Ledger offers developers several use cases for developing an Embedded App. Zenon has an unique architecture with its own Token Standard. Zenon is not an ETH clone, and cannot be derived from an existing app. This means that use cases 3 and 5 will be dropped. External development is an option if development proves to be too challenging for community developers. A possible outsourcing would mean that the person concerned would first have to learn more about the Zenon architecture, which would probably entail extra unnecessary costs. This project however aims to apply a combination of use cases 2 and 4.
 
 Because of the aforementioned Ledger release types, it is only logical that the phases of this project follow the same order.
 
@@ -147,21 +147,45 @@ Ledger devices are Hierarchical Deterministic wallets, which means they can deri
 - **Should have**: Sign a tx to receive from an Embedded Smart Contract. 
 - **Could have**: Support for sending/receiving Zenon Token Standard tokens. 
 
-## Phase 2 - Audited developer mode release
+## Phase 2 - Developer mode release
 
-The second phase of this project focuses on the development of an audited developer mode release for all Ledger devices.
+The second phase of this project focuses on the Embedded App submission for developer mode release.
 
-This phase requires additional funding outside the scope of this project to fund the security audit(s). The exact costs of the security audit(s) are uncertain at this stage.
+> Ledger has made some changes to the Embedded App development process since completing phase 1. The different unaudited and audited developer mode release types have been replaced by a single developer mode release type.
+>
+> This means the security audit has been moved to phase 3.
 
-This phase will be fully worked out when phase 1 is completed.
+The submission of a Ledger Embedded App is completed through a form. An application can go through Ledger acceptance several times, according to release type. See the [Release Requirements](https://developers.ledger.com/docs/embedded-app/release-requirements/#release-requirements) for a complete list of all requirements.
 
-**Completion of Phase 1 will be measured by**
+The following diagram shows a general overview of the development and submission phases.
 
-- **Must have**: Successfully pass the security audit.
+![dev-sub-flow](/assets/diagrams/dev-sub-flow.png)
+
+This phase aims to complete the "app dev mode release" phase in the above diagram.
+
+Most of the release requirements have already been completed in phase 1, except for the following:
+
+- Legal Entity name
+- The App has been fully tested with a companion wallet (CLI or GUI)
+- Video of your application running on the Ledger device (for Ledger Nano only)
+- A link to the Companion Wallet  
+  The wallet must give an option to verify the receiving address on a Ledger device. It should also have an affiliate link next to the “Connect with Ledger” option. You must provide either:
+  - a link to the CLI repository, or
+  - a link to the GUI running on Windows/MacOS/Linux (mandatory for Public release)
+- Link to a Google doc tutorial about how to install and use your app 
+
+The application will be submitted once all requirements are met and until Ledger has accepted and approved the submission.
+
+**Completion of Phase 2 will be measured by**
+
+- **Must have**: Companion Wallet integration (see [additional projects](#additional-projects-outside-the-scope-of-this-project))
+- **Must have**: Successfully complete "app dev mode release" phase.
 
 ## Phase 3 - Public release
 
-The third phase of this project focuses on the development of a public release.
+The third phase of this project focuses on the Embedded App submission for public release.
+
+This phase requires additional funding outside the scope of this project to fund the security audit(s). The exact costs of the security audit(s) are uncertain at this stage.
 
 This phase will be fully worked out when phase 2 is completed.
 
@@ -174,7 +198,7 @@ This phase will be fully worked out when phase 2 is completed.
 
 The realization of phases 2 and 3 largely depends on third parties and the market. For example, phase 2 is subject to the requirement that Zenon must be in the top 600 coins on cointmarketcap to meet the requirements for the security audit; furthermore, the security audit(s) most be approved and funded in a separate AZ project.
 
-The estimate is therefore based only on the total expected time I will need to complete Phase 1 and additional work that lead up to the security audit for Phase 2. The expected duration of phase 1 is expected to be between 6 and 8 months.
+The estimate is therefore based only on the total expected time I will need to complete phase 1 and additional work that lead up to the security audit for phase 2. The expected duration of phase 1 is expected to be between 6 and 8 months.
 
 I've calculated a ZNN & QSR of 2 and 0,20 dollar, which covers about 52% of the actual time spend against a rate of 100 dollar per hour. The remaining hours are considered learning hours for my own personal development.
 
@@ -183,6 +207,10 @@ The tools necessary for the job will be bought at own expense and are included i
 ## Additional projects outside the scope of this project
 
 During the preliminary investigation, a number of projects were identified that fall outside the scope of this project. This list is not exhaustive and can be picked up by other community members.
+
+**Support for Zenon CLI**
+
+Support for the Zenon CLI is considered outside the scope of this project. A separate project can start the integration process as soon as phase 1 of this project is complete. Communication is done over USB or Bluetooth using an APDU. The APDU functions as a common interface between the Ledger and Host device and will be defined and implemented in phase 1.
 
 **Support for s y r i u s desktop wallet**
 
