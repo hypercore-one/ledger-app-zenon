@@ -17,9 +17,8 @@
 
 #include <stdint.h>  // uint*_t
 #include <stddef.h>  // size_t
-#include <string.h>  // memmove
+#include <string.h>  // memcpy
 
-#include "os.h"
 #include "cx.h"
 
 #include "address.h"
@@ -40,27 +39,27 @@ bool address_from_pubkey(const uint8_t *public_key, char *out, size_t out_len) {
         return false;
     }
 
-    uint8_t core[ADDRESS_LEN] = {0};
+    uint8_t core[ADDRESS_LEN];
     core[0] = 0;  // user byte
-    memmove(core + 1, hash, ADDRESS_LEN - 1);
+    memcpy(core + 1, hash, ADDRESS_LEN - 1);
 
     return address_encode(core, out, out_len);
 }
 
 bool address_encode(const uint8_t *prog, char *out, size_t out_len) {
-    char bech32[73 + 1] = {0};
-
+    // Ensure the output buffer is large enough
     if (41 > out_len) {
         return false;
     }
 
+    char bech32[73];
+
     if (bech32_addr_encode(bech32, "z", prog, ADDRESS_LEN) != 1) {
-        return false;
+        return false;  // Bech32 encoding failed
     }
 
-    memmove(out, bech32, out_len - 1);
-
-    out[41] = '\0';  // null terminated
+    memcpy(out, bech32, 41);  // Copy 40 characters
+    out[40] = '\0';           // Null terminate
 
     return true;
 }
