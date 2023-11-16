@@ -57,8 +57,6 @@ static const char* const INFO_CONTENTS[] = {APPVERSION, "Zenon Community"};
 enum { DUMMY_SWITCH_1_TOKEN = FIRST_USER_TOKEN, DUMMY_SWITCH_2_TOKEN };
 enum { DUMMY_SWITCH_1_ID = 0, DUMMY_SWITCH_2_ID, SETTINGS_SWITCHES_NB };
 
-static nbgl_layoutSwitch_t switches[SETTINGS_SWITCHES_NB] = {0};
-
 static bool nav_callback(uint8_t page, nbgl_pageContent_t* content) {
     UNUSED(page);
 
