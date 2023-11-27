@@ -17,9 +17,8 @@
 
 #include <stdint.h>  // uint*_t
 #include <stddef.h>  // size_t
-#include <string.h>  // memmove
+#include <string.h>  // memcpy
 
-#include "os.h"
 #include "cx.h"
 
 #include "address.h"
@@ -28,39 +27,46 @@
 #include "transaction/types.h"
 
 bool address_from_pubkey(const uint8_t *public_key, char *out, size_t out_len) {
-    uint8_t hash[HASH_LEN] = {0};
-    cx_sha3_t sha3256;
+    uint8_t hash[HASH_LEN];
 
+    // Initialize SHA3-256 hashing context, return false if unsuccessful
+    cx_sha3_t sha3256;
     if (cx_sha3_init_no_throw(&sha3256, 256) != CX_OK) {
         return false;
     }
 
+    // Hash the public key using SHA3-256, return false if unsuccessful
     if (cx_hash_no_throw((cx_hash_t *) &sha3256, CX_LAST, public_key, 32, hash, HASH_LEN) !=
         CX_OK) {
         return false;
     }
 
-    uint8_t core[ADDRESS_LEN] = {0};
-    core[0] = 0;  // user byte
-    memmove(core + 1, hash, ADDRESS_LEN - 1);
+    // Prepare address structure
+    uint8_t core[ADDRESS_LEN];
+    core[0] = 0;  // First byte (user address byte)
+    // Copy the first 19 bytes of the hashed key into the address structure
+    memcpy(core + 1, hash, ADDRESS_LEN - 1);
 
+    // Encode the address into the out buffer
     return address_encode(core, out, out_len);
 }
 
 bool address_encode(const uint8_t *prog, char *out, size_t out_len) {
-    char bech32[73 + 1] = {0};
-
+    // Ensure the output buffer is large enough
     if (41 > out_len) {
         return false;
     }
 
+    // Encode the given prog array into a Bech32 format and store it
+    // into the bech32 character array
+    char bech32[73];
     if (bech32_addr_encode(bech32, "z", prog, ADDRESS_LEN) != 1) {
-        return false;
+        return false;  // Bech32 encoding failed
     }
 
-    memmove(out, bech32, out_len - 1);
-
-    out[41] = '\0';  // null terminated
+    // Copy the first 40 characters of the Bech32 address into the out buffer
+    memcpy(out, bech32, 40);  // Copy 40 characters
+    out[40] = '\0';           // Null terminate
 
     return true;
 }

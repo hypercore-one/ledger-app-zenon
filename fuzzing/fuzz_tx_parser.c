@@ -3,18 +3,15 @@
 #include <string.h>
 #include <sys/types.h>
 
-extern "C" {
-#include "common/buffer.h"
-#include "common/format.h"
 #include "transaction/deserialize.h"
 #include "transaction/types.h"
-#include "address.h"
+//#include "address.h"
 #include "token_standard.h"
 #include "bigint.h"
-}
+#include "format.h"
 
-extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
-    buffer_t buf = {.ptr = data, .size = size, .offset = 0};
+int LLVMFuzzerTestOneInput(const uint8_t *input, size_t size) {
+    buffer_t buf = {.ptr = input, .size = size, .offset = 0};
     transaction_t tx;
     parser_status_e status;
 
@@ -25,8 +22,8 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     char height[21] = {0};
     char momentumAcknowledgedHash[65] = {0};
     char momentumAcknowledgedHeight[21] = {0};
-    char address[41] = {0};
-    char toAddress[41] = {0};
+    //char address[41] = {0};
+    //char toAddress[41] = {0};
     char amount[82] = {0};
     char tokenStandard[27] = {0};
     char fromBlockHash[65] = {0};
@@ -59,14 +56,14 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
         // momentumAcknowledged (32 + 8 bytes)
         format_hex(tx.momentumAcknowledged, HASH_LEN, momentumAcknowledgedHash, sizeof(momentumAcknowledgedHash));
         printf("momentumAcknowledgedHash: %s\n", momentumAcknowledgedHash);
-        format_u64(momentumAcknowledgedHeight, sizeof(momentumAcknowledgedHeight), tx.momentumAcknowledged + HASH_LEN);
+        format_hex(tx.momentumAcknowledged + HASH_LEN, 8, momentumAcknowledgedHeight, sizeof(momentumAcknowledgedHeight));
         printf("momentumAcknowledgedHeight: %s\n", momentumAcknowledgedHeight);
         // address (20 bytes)
-        address_encode(tx.address, address, sizeof(address));
-        printf("address: %s\n", address);
+        //address_encode(tx.address, address, sizeof(address));
+        //printf("address: %s\n", address);
         // toAddress (20 bytes)
-        address_encode(tx.toAddress, toAddress, sizeof(toAddress));
-        printf("toAddress: %s\n", address);
+        //address_encode(tx.toAddress, toAddress, sizeof(toAddress));
+        //printf("toAddress: %s\n", address);
         // amount (32 bytes)
         bigint_t val;
         bigint_from_bytes(tx.amount, 32, true, true, &val);

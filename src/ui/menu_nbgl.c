@@ -30,26 +30,62 @@ void app_quit(void) {
     os_sched_exit(-1);
 }
 
+// home page definition
 void ui_menu_main(void) {
-    nbgl_useCaseHome(APPNAME, &C_app_zenon_64px, NULL, false, ui_menu_about, app_quit);
+// This parameter shall be set to false if the settings page contains only information
+// about the application (version , developer name, ...). It shall be set to
+// true if the settings page also contains user configurable parameters related to the
+// operation of the application.
+#define SETTINGS_BUTTON_ENABLED (false)
+
+    nbgl_useCaseHome(APPNAME,
+                     &C_app_zenon_64px,
+                     NULL,
+                     SETTINGS_BUTTON_ENABLED,
+                     ui_menu_settings,
+                     app_quit);
 }
 
-// 'About' menu
+//  -----------------------------------------------------------
+//  --------------------- SETTINGS MENU -----------------------
+//  -----------------------------------------------------------
 
 static const char* const INFO_TYPES[] = {"Version", "Developer"};
 static const char* const INFO_CONTENTS[] = {APPVERSION, "Zenon Community"};
 
+// settings switches definitions
+enum { DUMMY_SWITCH_1_TOKEN = FIRST_USER_TOKEN, DUMMY_SWITCH_2_TOKEN };
+enum { DUMMY_SWITCH_1_ID = 0, DUMMY_SWITCH_2_ID, SETTINGS_SWITCHES_NB };
+
 static bool nav_callback(uint8_t page, nbgl_pageContent_t* content) {
     UNUSED(page);
-    content->type = INFOS_LIST;
-    content->infosList.nbInfos = 2;
-    content->infosList.infoTypes = (const char**) INFO_TYPES;
-    content->infosList.infoContents = (const char**) INFO_CONTENTS;
+
+    // the first settings page contains only the version and the developer name
+    // of the app (shall be always on the first setting page)
+    if (page == 0) {
+        content->type = INFOS_LIST;
+        content->infosList.nbInfos = 2;
+        content->infosList.infoTypes = INFO_TYPES;
+        content->infosList.infoContents = INFO_CONTENTS;
+    } else {
+        return false;
+    }
+    // valid page so return true
     return true;
 }
 
-void ui_menu_about() {
-    nbgl_useCaseSettings(APPNAME, 0, 1, false, ui_menu_main, nav_callback, NULL);
+// settings menu definition
+void ui_menu_settings() {
+#define TOTAL_SETTINGS_PAGE  (1)
+#define INIT_SETTINGS_PAGE   (0)
+#define DISABLE_SUB_SETTINGS (false)
+    nbgl_useCaseSettings(APPNAME,
+                         INIT_SETTINGS_PAGE,
+                         TOTAL_SETTINGS_PAGE,
+                         DISABLE_SUB_SETTINGS,
+                         ui_menu_main,
+                         nav_callback,
+                         NULL);
 }
 
 #endif

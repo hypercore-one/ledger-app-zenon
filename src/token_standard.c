@@ -17,7 +17,7 @@
 
 #include <stdint.h>  // uint*_t
 #include <stddef.h>  // size_t
-#include <string.h>  // memmove
+#include <string.h>  // memcpy
 
 #include "token_standard.h"
 #include "segwit_addr.h"
@@ -27,29 +27,32 @@
 zts_t token_standard_type(const uint8_t *prog) {
     const uint8_t znnZtsBytes[] = {0x14, 0xe6, 0x63, 0x18, 0xc6, 0x31, 0x8c, 0x63, 0x18, 0xc6};
     const uint8_t znnQsrBytes[] = {0x04, 0x06, 0x63, 0x18, 0xc6, 0x31, 0x8c, 0x63, 0x18, 0xc6};
+
     if (memcmp(prog, znnZtsBytes, sizeof(znnZtsBytes)) == 0) {
         return ZNN;
-    } else if (memcmp(prog, znnQsrBytes, sizeof(znnQsrBytes)) == 0) {
-        return QSR;
-    } else {
-        return ZTS;
     }
+
+    if (memcmp(prog, znnQsrBytes, sizeof(znnQsrBytes)) == 0) {
+        return QSR;
+    }
+
+    return ZTS;
 }
 
 bool token_standard_encode(const uint8_t *prog, char *out, size_t out_len) {
-    char bech32[73 + 1] = {0};
-
-    if (27 > out_len) {
+    // Ensure the output buffer is large enough
+    if (28 > out_len) {
         return false;
     }
+
+    char bech32[73];
 
     if (bech32_addr_encode(bech32, "zts", prog, ZTS_LEN) != 1) {
-        return false;
+        return false;  // Bech32 encoding failed
     }
 
-    memmove(out, bech32, out_len - 1);
-
-    out[27] = '\0';  // null terminated
+    memcpy(out, bech32, 27);  // Copy 27 characters
+    out[27] = '\0';           // Null terminate
 
     return true;
 }
