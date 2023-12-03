@@ -44,7 +44,7 @@
 static action_validate_cb g_validate_callback;
 static char g_type[8];
 static char g_hash[65];
-static char g_amount[81];
+static char g_amount[83];
 static char g_bip32_path[20];
 static char g_address[41];
 
