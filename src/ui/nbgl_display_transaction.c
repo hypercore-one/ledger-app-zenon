@@ -45,7 +45,7 @@
 // Buffer where the transaction hash string is written
 static char g_hash[65];
 // Buffer where the transaction amount string is written
-static char g_amount[81];
+static char g_amount[83];
 // Buffer where the transaction address string is written
 static char g_address[41];
 
