@@ -232,8 +232,8 @@ int bigint_format(const bigint_t in, int8_t decimals, char *out, size_t out_len)
         rgch[--ichDst] = '-';
     }
 
-    int resultLength = ((decimals < cchMax - ichDst)
-        ? cchMax - ichDst : decimals + 1) + ((decimals > 0) ? 1 : 0);
+    int resultLength =
+        ((decimals < cchMax - ichDst) ? cchMax - ichDst : decimals + 1) + ((decimals > 0) ? 1 : 0);
 
     memcpy(out, rgch + ichDst, resultLength);
     out[resultLength] = '\n';
