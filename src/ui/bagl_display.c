@@ -44,7 +44,7 @@
 static action_validate_cb g_validate_callback;
 static char g_type[8];
 static char g_hash[65];
-static char g_amount[81];
+static char g_amount[84];
 static char g_bip32_path[20];
 static char g_address[41];
 
@@ -219,7 +219,7 @@ int ui_display_transaction() {
         }
 
         memset(g_amount, 0, sizeof(g_amount));
-        char amount[82] = {0};
+        char amount[81] = {0};
         if (bigint_format(val, decimals, amount, sizeof(amount)) < 0) {
             return io_send_sw(SW_DISPLAY_AMOUNT_FAIL);
         }

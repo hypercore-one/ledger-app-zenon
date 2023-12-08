@@ -160,7 +160,7 @@ int bigint_format(const bigint_t in, int8_t decimals, char *out, size_t out_len)
             snprintf(tmp, sizeof(tmp), "%d", in.sign);
             number_format(tmp, decimals, out, out_len);
         } else {
-            snprintf(out, out_len, "%d", in.sign);
+            snprintf(out, out_len, "%d\n", in.sign);
         }
         return 0;
     }
@@ -216,8 +216,7 @@ int bigint_format(const bigint_t in, int8_t decimals, char *out, size_t out_len)
     }
 
     if (!decimalFmt) {
-        char tmp[83];
-        memset(tmp, 0, sizeof(tmp));
+        char tmp[83] = {0};
 
         number_format(rgch + ichDst, decimals, tmp, sizeof(tmp));
         memcpy(rgch + ichDst, tmp, sizeof(tmp));
@@ -233,9 +232,11 @@ int bigint_format(const bigint_t in, int8_t decimals, char *out, size_t out_len)
         rgch[--ichDst] = '-';
     }
 
-    int resultLength = cchMax - ichDst;
+    int resultLength =
+        ((decimals < cchMax - ichDst) ? cchMax - ichDst : decimals + 1) + ((decimals > 0) ? 1 : 0);
 
     memcpy(out, rgch + ichDst, resultLength);
+    out[resultLength] = '\n';
 
     return resultLength;
 }
@@ -267,8 +268,7 @@ void number_format(char val[], int8_t decimals, char *out, size_t out_len) {
 
     if (position > 0) {
         if (len - position - trailing_zeros > 0) {
-            char sub[9];
-            memset(sub, 0, sizeof(sub));
+            char sub[18] = {0};
             substring(val, sub, position + 1, len - position - trailing_zeros);
 
             snprintf(out, out_len, "%.*s.%s\n", position, val, sub);
