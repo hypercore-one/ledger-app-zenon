@@ -43,7 +43,7 @@
 #include "../menu.h"
 
 // Buffer where the transaction hash string is written
-static char g_hash[65];
+static char g_hash[67];
 // Buffer where the transaction amount string is written
 static char g_amount[84];
 // Buffer where the transaction address string is written
