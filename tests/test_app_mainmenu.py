@@ -13,23 +13,13 @@ def test_app_mainmenu(firmware, navigator, test_name, default_screenshot_path):
         ]
     elif firmware is Firmware.STAX:
         instructions = [
-            NavInsID.USE_CASE_HOME_SETTINGS,
-            NavIns(NavInsID.TOUCH, (200, 113)),
-            NavIns(NavInsID.TOUCH, (200, 261)),
-            NavInsID.USE_CASE_CHOICE_CONFIRM,
-            NavIns(NavInsID.TOUCH, (200, 261)),
-            NavInsID.USE_CASE_SETTINGS_NEXT,
-            NavInsID.USE_CASE_SETTINGS_MULTI_PAGE_EXIT
+            NavInsID.USE_CASE_HOME_INFO,
+            NavInsID.USE_CASE_SETTINGS_SINGLE_PAGE_EXIT
         ]
     elif firmware is Firmware.FLEX:
         instructions = [
-            NavInsID.USE_CASE_HOME_SETTINGS,
-            NavIns(NavInsID.TOUCH, (200, 113)),
-            NavIns(NavInsID.TOUCH, (200, 300)),
-            NavInsID.USE_CASE_CHOICE_CONFIRM,
-            NavIns(NavInsID.TOUCH, (200, 300)),
-            NavInsID.USE_CASE_SETTINGS_NEXT,
-            NavInsID.USE_CASE_SETTINGS_MULTI_PAGE_EXIT
+            NavInsID.USE_CASE_HOME_INFO,
+            NavInsID.USE_CASE_SETTINGS_SINGLE_PAGE_EXIT
         ]
     navigator.navigate_and_compare(default_screenshot_path, test_name, instructions,
                                    screen_change_before_first_instruction=False)
