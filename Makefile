@@ -42,6 +42,7 @@ ICON_NANOS = icons/app_zenon_16px.gif
 ICON_NANOX = icons/app_zenon_14px.gif
 ICON_NANOSP = icons/app_zenon_14px.gif
 ICON_STAX = icons/app_zenon_32px.gif
+ICON_FLEX = icons/app_zenon_40px.gif
 
 # Application allowed derivation curves.
 # Possibles curves are: secp256k1, secp256r1, ed25519 and bls12381g1
@@ -68,7 +69,7 @@ VARIANT_PARAM = COIN
 VARIANT_VALUES = ZNN
 
 # Enabling DEBUG flag will enable PRINTF and disable optimizations
-# DEBUG = 1
+#DEBUG = 1
 
 ########################################
 #     Application custom permissions   #
@@ -104,5 +105,7 @@ ENABLE_NBGL_QRCODE = 1
 #DISABLE_STANDARD_USB = 1
 #DISABLE_STANDARD_WEBUSB = 1
 #DISABLE_STANDARD_BAGL_UX_FLOW = 1
+#DISABLE_DEBUG_LEDGER_ASSERT = 1
+#DISABLE_DEBUG_THROW = 1
 
 include $(BOLOS_SDK)/Makefile.standard_app
