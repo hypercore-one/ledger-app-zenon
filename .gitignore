@@ -6,7 +6,6 @@ bin/
 debug/
 
 # Temporary directory with snapshots taken during test runs
-tests/apps/snapshots-tmp/
 tests/snapshots-tmp/
 
 # Unit tests and code coverage
@@ -16,6 +15,8 @@ unit-tests/coverage.info
 
 # Fuzzing
 fuzzing/build/
+fuzzing/corpus/
+fuzzing/out/
 
 # Python
 *.pyc[cod]
