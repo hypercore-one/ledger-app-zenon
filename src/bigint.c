@@ -280,12 +280,12 @@ void number_format(char val[], int8_t decimals, char *out, size_t out_len) {
             // zero left-padding with width sub-specifier is not supported by BOLOS snprintf
             // function.
             snprintf(out,
-                    out_len,
-                    "0.%.*s%.*s\n",
-                    abs(position),
-                    "000000000000000000",
-                    len - trailing_zeros,
-                    val);
+                     out_len,
+                     "0.%.*s%.*s\n",
+                     abs(position),
+                     "000000000000000000",
+                     len - trailing_zeros,
+                     val);
         } else {
             snprintf(out, out_len, "0\n");
         }
