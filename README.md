@@ -1,3 +1,5 @@
+[![Ensure compliance with Ledger guidelines](https://github.com/hypercore-one/ledger-app-zenon/actions/workflows/guidelines_enforcer.yml/badge.svg)](https://github.com/hypercore-one/ledger-app-zenon/actions/workflows/guidelines_enforcer.yml) [![Build and run functional tests using ragger through reusable workflow](https://github.com/hypercore-one/ledger-app-zenon/actions/workflows/build_and_functional_tests.yml/badge.svg?branch=main)](https://github.com/hypercore-one/ledger-app-zenon/actions/workflows/build_and_functional_tests.yml)
+
 # Zenon Ledger Embedded App
 
 _Zenon wallet application for Ledger Nano S/X/SP and Stax_
@@ -6,7 +8,7 @@ _Zenon wallet application for Ledger Nano S/X/SP and Stax_
 
 ### With VSCode
 
-You can quickly setup a convenient environment to build and test your application by using the vscode integration and the [ledger-app-dev-tools](https://github.com/LedgerHQ/ledger-app-builder/pkgs/container/ledger-app-builder%2Fledger-app-dev-tools) docker image.
+You can quickly setup a convenient environment to build and test your application by using [Ledger's VSCode developer tools extension](https://marketplace.visualstudio.com/items?itemName=LedgerHQ.ledger-dev-tools) which leverages the [ledger-app-dev-tools](https://github.com/LedgerHQ/ledger-app-builder/pkgs/container/ledger-app-builder%2Fledger-app-dev-tools) docker image.
 
 It will allow you, whether you are developing on macOS, Windows or Linux to quickly **build** your apps, **test** them on **Speculos** and **load** them on any supported device.
 

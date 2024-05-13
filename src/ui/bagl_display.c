@@ -217,6 +217,7 @@ int ui_display_transaction() {
             strcpy(symbol, "ZTS");
             decimals = 0;
         }
+        PRINTF("Token: %s\n", symbol);
 
         memset(g_amount, 0, sizeof(g_amount));
         char amount[81] = {0};

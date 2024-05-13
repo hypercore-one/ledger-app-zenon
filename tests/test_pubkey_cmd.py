@@ -7,7 +7,6 @@ from ragger.error import ExceptionRAPDU
 from ragger.navigator import NavInsID, NavIns
 from utils import ROOT_SCREENSHOT_PATH
 
-
 # In this test we check that the GET_PUBLIC_KEY works in non-confirmation mode
 def test_get_public_key_no_confirm(backend):
     for path in ["m/44'/73404'/0'", "m/44'/73404'/1'", "m/44'/73404'/255'"]:
@@ -20,16 +19,12 @@ def test_get_public_key_no_confirm(backend):
 
 
 # In this test we check that the GET_PUBLIC_KEY works in confirmation mode
-def test_get_public_key_confirm_accepted(firmware, backend, navigator, test_name):
+def test_get_public_key_confirm_accepted(firmware, backend, navigator, test_name, scenario_navigator):
     client = ZenonCommandSender(backend)
     path = "m/44'/73404'/0'"
     with client.get_public_key_with_confirmation(path=path):
         if firmware.device.startswith("nano"):
-            navigator.navigate_until_text_and_compare(NavInsID.RIGHT_CLICK,
-                                                      [NavInsID.BOTH_CLICK],
-                                                      "Approve",
-                                                      ROOT_SCREENSHOT_PATH,
-                                                      test_name)
+            scenario_navigator.address_review_approve()
         else:
             instructions = [
                 NavInsID.USE_CASE_REVIEW_TAP,
@@ -42,6 +37,7 @@ def test_get_public_key_confirm_accepted(firmware, backend, navigator, test_name
             navigator.navigate_and_compare(ROOT_SCREENSHOT_PATH,
                                            test_name,
                                            instructions)
+
     response = client.get_async_response().data
     _, public_key = unpack_get_public_key_response(response)
 
@@ -51,21 +47,14 @@ def test_get_public_key_confirm_accepted(firmware, backend, navigator, test_name
 
 
 # In this test we check that the GET_PUBLIC_KEY in confirmation mode replies an error if the user refuses
-def test_get_public_key_confirm_refused(firmware, backend, navigator, test_name):
+def test_get_public_key_confirm_refused(firmware, backend, navigator, test_name, scenario_navigator):
     client = ZenonCommandSender(backend)
     path = "m/44'/73404'/0'"
 
     if firmware.device.startswith("nano"):
         with pytest.raises(ExceptionRAPDU) as e:
             with client.get_public_key_with_confirmation(path=path):
-                navigator.navigate_until_text_and_compare(NavInsID.RIGHT_CLICK,
-                                                          [NavInsID.BOTH_CLICK],
-                                                          "Reject",
-                                                          ROOT_SCREENSHOT_PATH,
-                                                          test_name)
-        # Assert that we have received a refusal
-        assert e.value.status == Errors.SW_DENY
-        assert len(e.value.data) == 0
+                scenario_navigator.address_review_reject()
     else:
         instructions_set = [
             [
@@ -84,6 +73,7 @@ def test_get_public_key_confirm_refused(firmware, backend, navigator, test_name)
                     navigator.navigate_and_compare(ROOT_SCREENSHOT_PATH,
                                                    test_name + f"/part{i}",
                                                    instructions)
-            # Assert that we have received a refusal
-            assert e.value.status == Errors.SW_DENY
-            assert len(e.value.data) == 0
+    
+    # Assert that we have received a refusal
+    assert e.value.status == Errors.SW_DENY
+    assert len(e.value.data) == 0
