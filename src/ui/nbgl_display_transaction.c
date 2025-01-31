@@ -46,7 +46,7 @@ static char g_amount[84];
 // Buffer where the transaction address string is written
 static char g_address[41];
 
-static nbgl_contentTagValue_t pairs[3];
+static nbgl_contentTagValue_t pairs[2];
 static nbgl_contentTagValueList_t pairList;
 
 // called when long press button on 3rd page is long-touched or when reject footer is touched
@@ -80,14 +80,18 @@ int ui_display_transaction_bs_choice(bool is_blind_signed) {
         }
 
         zts_t zts = token_standard_type(G_context.tx_info.transaction.tokenStandard);
-        char symbol[4];
+        char zts_symbol[4];
+        char zts_name[7];
         int8_t decimals = 8;
         if (zts == ZNN) {
-            strcpy(symbol, "ZNN");
+            strcpy(zts_symbol, "ZNN");
+            strcpy(zts_name, "Zenon");
         } else if (zts == QSR) {
-            strcpy(symbol, "QSR");
+            strcpy(zts_symbol, "QSR");
+            strcpy(zts_name, "Quasar");
         } else {
-            strcpy(symbol, "ZTS");
+            strcpy(zts_symbol, "ZTS");
+            strcpy(zts_name, "token");
             decimals = 0;
         }
 
@@ -97,7 +101,7 @@ int ui_display_transaction_bs_choice(bool is_blind_signed) {
             return io_send_sw(SW_DISPLAY_AMOUNT_FAIL);
         }
 
-        snprintf(g_amount, sizeof(g_amount), "%.*s %s", strlen(amount) - 1, amount, symbol);
+        snprintf(g_amount, sizeof(g_amount), "%.*s %s", strlen(amount) - 1, amount, zts_symbol);
         PRINTF("Amount: %s\n", g_amount);
 
         memset(g_address, 0, sizeof(g_address));
@@ -109,26 +113,29 @@ int ui_display_transaction_bs_choice(bool is_blind_signed) {
         PRINTF("Address: %s\n", g_address);
 
 		// Setup data to display
-	    pairs[0].item = "Type";
-	    pairs[0].value = "Send";
-	    pairs[1].item = "Amount";
-	    pairs[1].value = g_amount;
-	    pairs[2].item = "Address";
-	    pairs[2].value = g_address;
+	    pairs[0].item = "Amount";
+	    pairs[0].value = g_amount;
+	    pairs[1].item = "Address";
+	    pairs[1].value = g_address;
 
 	    // Setup list
 	    pairList.nbMaxLinesForValue = 0;
-	    pairList.nbPairs = 3;
+	    pairList.nbPairs = 2;
 	    pairList.pairs = pairs;
 	    
+        char reviewTitle[35];
+        char signTitle[33];
+        snprintf(reviewTitle, sizeof(reviewTitle), "Review transaction\nto send %s\n", zts_name);
+        snprintf(signTitle, sizeof(signTitle), "Sign transaction\nto send %s\n", zts_name);
+
 		if (is_blind_signed) {
 	        // Start blind-signing send flow
 	        nbgl_useCaseReviewBlindSigning(TYPE_TRANSACTION,
 	                                       &pairList,
 	                                       &ICON_APP_ZENON,
-	                                       "Review transaction\nto send",
+	                                       reviewTitle,
 	                                       NULL,
-	                                       "Sign transaction\nto send",
+	                                       signTitle,
 	                                       NULL,
 	                                       review_choice);
 	    } else {
@@ -136,9 +143,9 @@ int ui_display_transaction_bs_choice(bool is_blind_signed) {
 	        nbgl_useCaseReview(TYPE_TRANSACTION,
 	                           &pairList,
 	                           &ICON_APP_ZENON,
-	                           "Review transaction\nto send",
+	                           reviewTitle,
 	                           NULL,
-	                           "Sign transaction\nto send",
+	                           signTitle,
 	                           review_choice);
 	    }                   
     } else if (G_context.tx_info.transaction.blockType == 1 ||
@@ -146,17 +153,18 @@ int ui_display_transaction_bs_choice(bool is_blind_signed) {
                G_context.tx_info.transaction.blockType == 5) {
         // RECEIVE TX
         memset(g_hash, 0, sizeof(g_hash));
-        snprintf(g_hash, sizeof(g_hash), "0x%.*H", HASH_LEN, G_context.tx_info.m_hash);
+        if (format_hex(G_context.tx_info.m_hash, HASH_LEN, g_hash, sizeof(g_hash)) ==
+            -1) {
+            return io_send_sw(SW_DISPLAY_HASH_FAIL);
+        };
         
         // Setup data to display
-	    pairs[0].item = "Type";
-	    pairs[0].value = "Receive";
-	    pairs[1].item = "Hash";
-	    pairs[1].value = g_hash;
+	    pairs[0].item = "Hash";
+	    pairs[0].value = g_hash;
 
 	    // Setup list
 	    pairList.nbMaxLinesForValue = 0;
-	    pairList.nbPairs = 2;
+	    pairList.nbPairs = 1;
 	    pairList.pairs = pairs;
     
         if (is_blind_signed) {

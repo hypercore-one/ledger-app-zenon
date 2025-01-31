@@ -39,6 +39,9 @@
 static char g_address[41];
 static char g_bip32_path[60];
 
+static nbgl_contentTagValue_t pairs[1];
+static nbgl_contentTagValueList_t pairList;
+
 static void review_choice(bool confirm) {
     // Answer, display a status page and go back to main
     validate_pubkey(confirm);
@@ -64,17 +67,21 @@ int ui_display_address() {
     }
     
     memset(g_address, 0, sizeof(g_address));
-    uint8_t address[ADDRESS_LEN] = {0};
-    if (!address_from_pubkey(G_context.public_key, address, sizeof(address))) {
+    if (!address_from_pubkey(G_context.public_key, g_address, sizeof(g_address))) {
         return io_send_sw(SW_DISPLAY_ADDRESS_FAIL);
     }
 
-    if (format_hex(address, sizeof(address), g_address, sizeof(g_address)) == -1) {
-        return io_send_sw(SW_DISPLAY_ADDRESS_FAIL);
-    }
+    // Setup data to display
+    pairs[0].item = "Derivation path";
+    pairs[0].value = g_bip32_path;
 
+    // Setup list
+    pairList.nbMaxLinesForValue = 0;
+    pairList.nbPairs = 1;
+    pairList.pairs = pairs;
+    
     nbgl_useCaseAddressReview(g_address,
-                              NULL,
+                              &pairList,
                               &ICON_APP_ZENON,
                               "Verify Zenon address",
                               NULL,

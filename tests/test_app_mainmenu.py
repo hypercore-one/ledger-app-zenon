@@ -12,8 +12,10 @@ def test_app_mainmenu(firmware: Firmware,
     if firmware.is_nano:
         instructions += [
             NavInsID.RIGHT_CLICK,
+            NavInsID.BOTH_CLICK,
             NavInsID.RIGHT_CLICK,
-            NavInsID.RIGHT_CLICK
+            NavInsID.RIGHT_CLICK,
+            NavInsID.BOTH_CLICK
         ]
     elif firmware is Firmware.STAX:
         instructions += [

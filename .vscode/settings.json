@@ -18,11 +18,11 @@
             "test_get_public_key_no_confirm",
             "test_get_public_key_confirm_accepted",
             "test_get_public_key_confirm_refused",
-            "test_sign_tx_short_tx",
-            "test_sign_tx_short_tx_blind_sign",
-            "test_sign_tx_long_tx",
+            "test_sign_tx_send_tx",
+            "test_sign_tx_receive_tx",
             "test_sign_tx_refused",
             "test_version"
-        ]
+        ],
+        "selectedTests": []
     }
 }
