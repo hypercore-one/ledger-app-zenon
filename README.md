@@ -4,7 +4,7 @@
 
 # Zenon Ledger Embedded App
 
-_Zenon wallet application for Ledger Nano S/X/SP and Stax_
+_Zenon wallet application for Ledger Nano X/SP, Stax and Flex_
 
 ## Quick start guide
 
