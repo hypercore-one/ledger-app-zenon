@@ -1,6 +1,6 @@
 /*****************************************************************************
  *   Ledger App Zenon.
- *   (c) 2023 Zenon Community.
+ *   (c) 2025 Zenon Community.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,16 +15,16 @@
  *  limitations under the License.
  *****************************************************************************/
 
-#include <stdint.h>  // uint*_t
-#include <stddef.h>  // size_t
-#include <string.h>  // memcpy
+#include <stdint.h>   // uint*_t
+#include <stddef.h>   // size_t
+#include <stdbool.h>  // bool
+#include <string.h>   // memcpy
 
 #include "cx.h"
 
 #include "address.h"
 #include "segwit_addr.h"
-
-#include "transaction/types.h"
+#include "tx_types.h"
 
 bool address_from_pubkey(const uint8_t *public_key, char *out, size_t out_len) {
     uint8_t hash[HASH_LEN];

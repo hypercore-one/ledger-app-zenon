@@ -1,6 +1,6 @@
 /*****************************************************************************
  *   Ledger App Zenon.
- *   (c) 2023 Zenon Community.
+ *   (c) 2025 Zenon Community.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -27,11 +27,11 @@
 #include "crypto_helpers.h"
 
 #include "get_public_key.h"
-#include "../globals.h"
-#include "../types.h"
-#include "../sw.h"
-#include "../ui/display.h"
-#include "../helper/send_response.h"
+#include "globals.h"
+#include "types.h"
+#include "sw.h"
+#include "display.h"
+#include "send_response.h"
 
 int handler_get_public_key(buffer_t *cdata, bool display) {
     explicit_bzero(&G_context, sizeof(G_context));

@@ -1,10 +1,15 @@
 import pytest
 import hashlib
 
+from ragger.backend.interface import BackendInterface
+from ragger.error import ExceptionRAPDU
+from ragger.firmware import Firmware
+from ragger.navigator import Navigator, NavInsID
+from ragger.navigator.navigation_scenario import NavigateWithScenario
+
 from application_client.zenon_transaction import Transaction
 from application_client.zenon_command_sender import ZenonCommandSender, Errors
 from application_client.zenon_response_unpacker import unpack_get_public_key_response, unpack_sign_tx_response
-from ragger.error import ExceptionRAPDU
 from utils import check_signature_validity
 
 # In this tests we check the behavior of the device when asked to sign a transaction
@@ -13,7 +18,7 @@ from utils import check_signature_validity
 # In this test we send to the device a transaction to sign and validate it on screen
 # The transaction is a receive transaction and will be sent in multiple chunks
 # We will ensure that the displayed information is correct by using screenshots comparison
-def test_sign_tx_send_tx(backend, scenario_navigator):
+def test_sign_tx_send_tx(backend: BackendInterface, scenario_navigator: NavigateWithScenario) -> None:
     # Use the app interface instead of raw interface
     client = ZenonCommandSender(backend)
     # The path used for this entire test
@@ -53,7 +58,12 @@ def test_sign_tx_send_tx(backend, scenario_navigator):
 # In this test we send to the device a transaction to sign and validate it on screen
 # The transaction is a send transaction and will be sent in multiple chunks
 # We will ensure that the displayed information is correct by using screenshots comparison
-def test_sign_tx_receive_tx(backend, scenario_navigator):
+def test_sign_tx_receive_tx(firmware: Firmware,
+                                     backend: BackendInterface,
+                                     navigator: Navigator,
+                                     scenario_navigator: NavigateWithScenario,
+                                     test_name: str,
+                                     default_screenshot_path: str) -> None:
     # Use the app interface instead of raw interface
     client = ZenonCommandSender(backend)
     path: str = "m/44'/73404'/0'"
@@ -77,7 +87,7 @@ def test_sign_tx_receive_tx(backend, scenario_navigator):
 
 # Transaction signature refused test
 # The test will ask for a transaction signature that will be refused on screen
-def test_sign_tx_refused(backend, scenario_navigator):
+def test_sign_tx_refused(backend: BackendInterface, scenario_navigator: NavigateWithScenario) -> None:
     # Use the app interface instead of raw interface
     client = ZenonCommandSender(backend)
     path: str = "m/44'/73404'/0'"

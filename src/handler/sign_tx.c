@@ -1,6 +1,6 @@
 /*****************************************************************************
  *   Ledger App Zenon.
- *   (c) 2023 Zenon Community.
+ *   (c) 2025 Zenon Community.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25,11 +25,11 @@
 #include "buffer.h"
 
 #include "sign_tx.h"
-#include "../sw.h"
-#include "../globals.h"
-#include "../ui/display.h"
-#include "../transaction/types.h"
-#include "../transaction/deserialize.h"
+#include "sw.h"
+#include "globals.h"
+#include "display.h"
+#include "tx_types.h"
+#include "deserialize.h"
 
 int handler_sign_tx(buffer_t *cdata, uint8_t chunk, bool more) {
     if (chunk == 0) {  // first APDU, parse BIP32 path
@@ -98,7 +98,19 @@ int handler_sign_tx(buffer_t *cdata, uint8_t chunk, bool more) {
 
             PRINTF("Hash: %.*H\n", sizeof(G_context.tx_info.m_hash), G_context.tx_info.m_hash);
 
-            return ui_display_transaction();
+			// Receive transaction is currently always blind-sign flow
+			if (G_context.tx_info.transaction.blockType == 1 ||
+				G_context.tx_info.transaction.blockType == 3 ||
+				G_context.tx_info.transaction.blockType == 5) {
+               	// to remove when Nbgl will be available for Nanos
+#ifdef HAVE_NBGL
+                return ui_display_blind_signed_transaction();
+#else
+                return ui_display_transaction();
+#endif
+            } else {
+                return ui_display_transaction();
+            }
         }
     }
 

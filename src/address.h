@@ -1,7 +1,8 @@
 #pragma once
 
-#include <stdint.h>  // uint*_t
-#include <stddef.h>  // size_t
+#include <stdint.h>   // uint*_t
+#include <stddef.h>   // size_t
+#include <stdbool.h>  // bool
 
 /**
  * Encodes a zenon address from public key using bech32.

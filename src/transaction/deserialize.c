@@ -1,6 +1,6 @@
 /*****************************************************************************
  *   Ledger App Zenon.
- *   (c) 2023 Zenon Community.
+ *   (c) 2025 Zenon Community.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,6 +18,13 @@
 
 #include "deserialize.h"
 #include "types.h"
+
+#if defined(TEST) || defined(FUZZ)
+#include "assert.h"
+#define LEDGER_ASSERT(x, y) assert(x)
+#else
+#include "ledger_assert.h"
+#endif
 
 parser_status_e transaction_deserialize(buffer_t *buf, transaction_t *tx) {
     if (buf->size != TX_LEN) {

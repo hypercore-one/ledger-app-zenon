@@ -1,6 +1,6 @@
 /*****************************************************************************
  *   Ledger App Zenon.
- *   (c) 2023 Zenon Community.
+ *   (c) 2025 Zenon Community.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22,9 +22,9 @@
 #include "buffer.h"
 
 #include "send_response.h"
-#include "../constants.h"
-#include "../globals.h"
-#include "../sw.h"
+#include "constants.h"
+#include "globals.h"
+#include "sw.h"
 
 int helper_send_response_pubkey() {
     uint8_t resp[1 + PUBKEY_LEN] = {0};
