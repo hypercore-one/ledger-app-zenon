@@ -22,7 +22,7 @@
 #include "token_standard.h"
 #include "segwit_addr.h"
 
-#include "tx_types.h"
+#include "transaction/tx_types.h"
 
 zts_t token_standard_type(const uint8_t *prog) {
     const uint8_t znnZtsBytes[] = {0x14, 0xe6, 0x63, 0x18, 0xc6, 0x31, 0x8c, 0x63, 0x18, 0xc6};

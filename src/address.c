@@ -24,7 +24,7 @@
 
 #include "address.h"
 #include "segwit_addr.h"
-#include "tx_types.h"
+#include "transaction/tx_types.h"
 
 bool address_from_pubkey(const uint8_t *public_key, char *out, size_t out_len) {
     uint8_t hash[HASH_LEN];
