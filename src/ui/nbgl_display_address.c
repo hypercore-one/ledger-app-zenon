@@ -65,7 +65,7 @@ int ui_display_address() {
                            sizeof(g_bip32_path))) {
         return io_send_sw(SW_DISPLAY_BIP32_PATH_FAIL);
     }
-    
+
     memset(g_address, 0, sizeof(g_address));
     if (!address_from_pubkey(G_context.public_key, g_address, sizeof(g_address))) {
         return io_send_sw(SW_DISPLAY_ADDRESS_FAIL);
@@ -79,7 +79,7 @@ int ui_display_address() {
     pairList.nbMaxLinesForValue = 0;
     pairList.nbPairs = 1;
     pairList.pairs = pairs;
-    
+
     nbgl_useCaseAddressReview(g_address,
                               &pairList,
                               &ICON_APP_ZENON,

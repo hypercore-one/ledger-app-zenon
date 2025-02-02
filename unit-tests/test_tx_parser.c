@@ -7,8 +7,8 @@
 
 #include <cmocka.h>
 
-#include "transaction/serialize.h"
-#include "transaction/deserialize.h"
+#include "serialize.h"
+#include "deserialize.h"
 #include "types.h"
 
 static void test_tx_serialization(void **state) {

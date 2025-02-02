@@ -112,42 +112,42 @@ int ui_display_transaction_bs_choice(bool is_blind_signed) {
         }
         PRINTF("Address: %s\n", g_address);
 
-		// Setup data to display
-	    pairs[0].item = "Amount";
-	    pairs[0].value = g_amount;
-	    pairs[1].item = "Address";
-	    pairs[1].value = g_address;
+        // Setup data to display
+        pairs[0].item = "Amount";
+        pairs[0].value = g_amount;
+        pairs[1].item = "Address";
+        pairs[1].value = g_address;
 
-	    // Setup list
-	    pairList.nbMaxLinesForValue = 0;
-	    pairList.nbPairs = 2;
-	    pairList.pairs = pairs;
-	    
+        // Setup list
+        pairList.nbMaxLinesForValue = 0;
+        pairList.nbPairs = 2;
+        pairList.pairs = pairs;
+    
         char reviewTitle[35];
         char signTitle[33];
         snprintf(reviewTitle, sizeof(reviewTitle), "Review transaction\nto send %s\n", zts_name);
         snprintf(signTitle, sizeof(signTitle), "Sign transaction\nto send %s\n", zts_name);
 
-		if (is_blind_signed) {
-	        // Start blind-signing send flow
-	        nbgl_useCaseReviewBlindSigning(TYPE_TRANSACTION,
-	                                       &pairList,
-	                                       &ICON_APP_ZENON,
-	                                       reviewTitle,
-	                                       NULL,
-	                                       signTitle,
-	                                       NULL,
-	                                       review_choice);
-	    } else {
-	        // Start send flow
-	        nbgl_useCaseReview(TYPE_TRANSACTION,
-	                           &pairList,
-	                           &ICON_APP_ZENON,
-	                           reviewTitle,
-	                           NULL,
-	                           signTitle,
-	                           review_choice);
-	    }                   
+        if (is_blind_signed) {
+            // Start blind-signing send flow
+            nbgl_useCaseReviewBlindSigning(TYPE_TRANSACTION,
+                                           &pairList,
+                                           &ICON_APP_ZENON,
+                                           reviewTitle,
+                                           NULL,
+                                           signTitle,
+                                           NULL,
+                                           review_choice);
+        } else {
+            // Start send flow
+            nbgl_useCaseReview(TYPE_TRANSACTION,
+                               &pairList,
+                               &ICON_APP_ZENON,
+                               reviewTitle,
+                               NULL,
+                               signTitle,
+                               review_choice);
+        }                   
     } else if (G_context.tx_info.transaction.blockType == 1 ||
                G_context.tx_info.transaction.blockType == 3 ||
                G_context.tx_info.transaction.blockType == 5) {
@@ -159,34 +159,34 @@ int ui_display_transaction_bs_choice(bool is_blind_signed) {
         };
         
         // Setup data to display
-	    pairs[0].item = "Hash";
-	    pairs[0].value = g_hash;
+        pairs[0].item = "Hash";
+        pairs[0].value = g_hash;
 
-	    // Setup list
-	    pairList.nbMaxLinesForValue = 0;
-	    pairList.nbPairs = 1;
-	    pairList.pairs = pairs;
+        // Setup list
+        pairList.nbMaxLinesForValue = 0;
+        pairList.nbPairs = 1;
+        pairList.pairs = pairs;
     
         if (is_blind_signed) {
-	        // Start blind-signing review flow
-	        nbgl_useCaseReviewBlindSigning(TYPE_TRANSACTION,
-	                                       &pairList,
-	                                       &ICON_APP_ZENON,
-	                                       "Review transaction\nto receive",
-	                                       NULL,
-	                                       "Sign transaction\nto receive",
-	                                       NULL,
-	                                       review_choice);
-	    } else {
-	        // Start review flow
-	        nbgl_useCaseReview(TYPE_TRANSACTION,
-	                           &pairList,
-	                           &ICON_APP_ZENON,
-	                           "Review transaction\nto receive",
-	                           NULL,
-	                           "Sign transaction\nto receive",
-	                           review_choice);
-	    }
+            // Start blind-signing review flow
+            nbgl_useCaseReviewBlindSigning(TYPE_TRANSACTION,
+                                           &pairList,
+                                           &ICON_APP_ZENON,
+                                           "Review transaction\nto receive",
+                                           NULL,
+                                           "Sign transaction\nto receive",
+                                           NULL,
+                                           review_choice);
+        } else {
+            // Start review flow
+            nbgl_useCaseReview(TYPE_TRANSACTION,
+                               &pairList,
+                               &ICON_APP_ZENON,
+                               "Review transaction\nto receive",
+                               NULL,
+                               "Sign transaction\nto receive",
+                               review_choice);
+        }
     } else {
         // UNKNOWN TX
         return io_send_sw(SW_BAD_STATE);
