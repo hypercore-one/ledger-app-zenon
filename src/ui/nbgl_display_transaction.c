@@ -156,7 +156,7 @@ int ui_display_transaction_bs_choice(bool is_blind_signed) {
         if (format_hex(G_context.tx_info.m_hash, HASH_LEN, g_hash, sizeof(g_hash)) == -1) {
             return io_send_sw(SW_DISPLAY_HASH_FAIL);
         };
-        
+
         // Setup data to display
         pairs[0].item = "Hash";
         pairs[0].value = g_hash;
