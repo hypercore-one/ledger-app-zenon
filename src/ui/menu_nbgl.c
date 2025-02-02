@@ -54,7 +54,7 @@ static const nbgl_contentInfoList_t infoList = {
 
 // home page definition
 void ui_menu_main(void) {
-	nbgl_useCaseHomeAndSettings(APPNAME,
+    nbgl_useCaseHomeAndSettings(APPNAME,
                                 &ICON_APP_ZENON,
                                 NULL,
                                 INIT_HOME_PAGE,

@@ -98,11 +98,11 @@ int handler_sign_tx(buffer_t *cdata, uint8_t chunk, bool more) {
 
             PRINTF("Hash: %.*H\n", sizeof(G_context.tx_info.m_hash), G_context.tx_info.m_hash);
 
-			// Receive transaction is currently always blind-sign flow
-			if (G_context.tx_info.transaction.blockType == 1 ||
-				G_context.tx_info.transaction.blockType == 3 ||
-				G_context.tx_info.transaction.blockType == 5) {
-               	// to remove when Nbgl will be available for Nanos
+            // Receive transaction is currently always blind-sign flow
+            if (G_context.tx_info.transaction.blockType == 1 ||
+                G_context.tx_info.transaction.blockType == 3 ||
+                G_context.tx_info.transaction.blockType == 5) {
+                // to remove when Nbgl will be available for Nanos
 #ifdef HAVE_NBGL
                 return ui_display_blind_signed_transaction();
 #else

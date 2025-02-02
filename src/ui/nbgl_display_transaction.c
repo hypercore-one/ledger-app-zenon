@@ -122,7 +122,7 @@ int ui_display_transaction_bs_choice(bool is_blind_signed) {
         pairList.nbMaxLinesForValue = 0;
         pairList.nbPairs = 2;
         pairList.pairs = pairs;
-    
+
         char reviewTitle[35];
         char signTitle[33];
         snprintf(reviewTitle, sizeof(reviewTitle), "Review transaction\nto send %s\n", zts_name);
@@ -147,14 +147,13 @@ int ui_display_transaction_bs_choice(bool is_blind_signed) {
                                NULL,
                                signTitle,
                                review_choice);
-        }                   
+        }
     } else if (G_context.tx_info.transaction.blockType == 1 ||
                G_context.tx_info.transaction.blockType == 3 ||
                G_context.tx_info.transaction.blockType == 5) {
         // RECEIVE TX
         memset(g_hash, 0, sizeof(g_hash));
-        if (format_hex(G_context.tx_info.m_hash, HASH_LEN, g_hash, sizeof(g_hash)) ==
-            -1) {
+        if (format_hex(G_context.tx_info.m_hash, HASH_LEN, g_hash, sizeof(g_hash)) == -1) {
             return io_send_sw(SW_DISPLAY_HASH_FAIL);
         };
         
@@ -166,7 +165,7 @@ int ui_display_transaction_bs_choice(bool is_blind_signed) {
         pairList.nbMaxLinesForValue = 0;
         pairList.nbPairs = 1;
         pairList.pairs = pairs;
-    
+
         if (is_blind_signed) {
             // Start blind-signing review flow
             nbgl_useCaseReviewBlindSigning(TYPE_TRANSACTION,
