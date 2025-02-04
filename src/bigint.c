@@ -177,8 +177,8 @@ int bigint_format(const bigint_t in, int8_t decimals, char *out, size_t out_len)
         uint32_t uCarry = in.bits[iuSrc];
         for (int8_t iuDst = 0; iuDst < cuDst; iuDst++) {
             uint64_t uuRes = make_uint64(rguDst[iuDst], uCarry);
-            rguDst[iuDst] = (uint32_t)(uuRes % kuBase);
-            uCarry = (uint32_t)(uuRes / kuBase);
+            rguDst[iuDst] = (uint32_t) (uuRes % kuBase);
+            uCarry = (uint32_t) (uuRes / kuBase);
         }
         if (uCarry != 0) {
             rguDst[cuDst++] = uCarry % kuBase;

@@ -1,6 +1,6 @@
 /*****************************************************************************
  *   Ledger App Zenon.
- *   (c) 2023 Zenon Community.
+ *   (c) 2025 Zenon Community.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
 #include "token_standard.h"
 #include "segwit_addr.h"
 
-#include "transaction/types.h"
+#include "transaction/tx_types.h"
 
 zts_t token_standard_type(const uint8_t *prog) {
     const uint8_t znnZtsBytes[] = {0x14, 0xe6, 0x63, 0x18, 0xc6, 0x31, 0x8c, 0x63, 0x18, 0xc6};

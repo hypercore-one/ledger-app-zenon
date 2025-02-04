@@ -1,6 +1,6 @@
 /*****************************************************************************
  *   Ledger App Zenon.
- *   (c) 2023 Zenon Community.
+ *   (c) 2025 Zenon Community.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,9 +17,6 @@
 
 #ifdef HAVE_NBGL
 
-#pragma GCC diagnostic ignored "-Wformat-invalid-specifier"  // snprintf
-#pragma GCC diagnostic ignored "-Wformat-extra-args"         // snprintf
-
 #include <stdbool.h>  // bool
 #include <string.h>   // memset
 
@@ -33,14 +30,14 @@
 
 #include "display.h"
 #include "constants.h"
-#include "../globals.h"
-#include "../sw.h"
-#include "../address.h"
-#include "../token_standard.h"
-#include "../bigint.h"
-#include "action/validate.h"
-#include "../transaction/types.h"
-#include "../menu.h"
+#include "globals.h"
+#include "sw.h"
+#include "address.h"
+#include "token_standard.h"
+#include "bigint.h"
+#include "validate.h"
+#include "tx_types.h"
+#include "menu.h"
 
 // Buffer where the transaction hash string is written
 static char g_hash[67];
@@ -49,83 +46,26 @@ static char g_amount[84];
 // Buffer where the transaction address string is written
 static char g_address[41];
 
-static nbgl_layoutTagValue_t pairs[3];
-static nbgl_layoutTagValueList_t pairList;
-static nbgl_pageInfoLongPress_t infoLongPress;
-
-static void confirm_transaction_rejection(void) {
-    // display a status page and go back to main
-    validate_transaction(false);
-    nbgl_useCaseStatus("Transaction rejected", false, ui_menu_main);
-}
-
-static void ask_transaction_rejection_confirmation(void) {
-    // display a choice to confirm/cancel rejection
-    nbgl_useCaseConfirm("Reject transaction?",
-                        NULL,
-                        "Yes, Reject",
-                        "Go back to transaction",
-                        confirm_transaction_rejection);
-}
+static nbgl_contentTagValue_t pairs[2];
+static nbgl_contentTagValueList_t pairList;
 
 // called when long press button on 3rd page is long-touched or when reject footer is touched
 static void review_choice(bool confirm) {
+    // Answer, display a status page and go back to main
+    validate_transaction(confirm);
     if (confirm) {
-        // display a status page and go back to main
-        validate_transaction(true);
-        nbgl_useCaseStatus("TRANSACTION\nSIGNED", true, ui_menu_main);
+        nbgl_useCaseReviewStatus(STATUS_TYPE_TRANSACTION_SIGNED, ui_menu_main);
     } else {
-        ask_transaction_rejection_confirmation();
+        nbgl_useCaseReviewStatus(STATUS_TYPE_TRANSACTION_REJECTED, ui_menu_main);
     }
-}
-
-static void review_send_continue(void) {
-    // Setup data to display
-    pairs[0].item = "Type";
-    pairs[0].value = "Send";
-    pairs[1].item = "Amount";
-    pairs[1].value = g_amount;
-    pairs[2].item = "Address";
-    pairs[2].value = g_address;
-
-    // Setup list
-    pairList.nbMaxLinesForValue = 0;
-    pairList.nbPairs = 3;
-    pairList.pairs = pairs;
-
-    // Info long press
-    infoLongPress.icon = &C_app_zenon_64px;
-    infoLongPress.text = "Sign transaction\nto send";
-    infoLongPress.longPressText = "Hold to sign";
-
-    nbgl_useCaseStaticReview(&pairList, &infoLongPress, "Reject transaction", review_choice);
-}
-
-static void review_receive_continue(void) {
-    // Setup data to display
-    pairs[0].item = "Type";
-    pairs[0].value = "Receive";
-    pairs[1].item = "Hash";
-    pairs[1].value = g_hash;
-
-    // Setup list
-    pairList.nbMaxLinesForValue = 0;
-    pairList.nbPairs = 2;
-    pairList.pairs = pairs;
-
-    // Info long press
-    infoLongPress.icon = &C_app_zenon_64px;
-    infoLongPress.text = "Sign transaction\nto receive";
-    infoLongPress.longPressText = "Hold to sign";
-
-    nbgl_useCaseStaticReview(&pairList, &infoLongPress, "Reject transaction", review_choice);
 }
 
 // Public function to start the transaction review
 // - Check if the app is in the right state for transaction review
 // - Format the amount and address strings in g_amount and g_address buffers
 // - Display the first screen of the transaction review
-int ui_display_transaction() {
+// - Display a warning if the transaction is blind-signed
+int ui_display_transaction_bs_choice(bool is_blind_signed) {
     if (G_context.req_type != CONFIRM_TRANSACTION || G_context.state != STATE_PARSED) {
         G_context.state = STATE_NONE;
         return io_send_sw(SW_BAD_STATE);
@@ -140,14 +80,18 @@ int ui_display_transaction() {
         }
 
         zts_t zts = token_standard_type(G_context.tx_info.transaction.tokenStandard);
-        char symbol[4];
+        char zts_symbol[4];
+        char zts_name[7];
         int8_t decimals = 8;
         if (zts == ZNN) {
-            strcpy(symbol, "ZNN");
+            strcpy(zts_symbol, "ZNN");
+            strcpy(zts_name, "Zenon");
         } else if (zts == QSR) {
-            strcpy(symbol, "QSR");
+            strcpy(zts_symbol, "QSR");
+            strcpy(zts_name, "Quasar");
         } else {
-            strcpy(symbol, "ZTS");
+            strcpy(zts_symbol, "ZTS");
+            strcpy(zts_name, "token");
             decimals = 0;
         }
 
@@ -157,7 +101,7 @@ int ui_display_transaction() {
             return io_send_sw(SW_DISPLAY_AMOUNT_FAIL);
         }
 
-        snprintf(g_amount, sizeof(g_amount), "%.*s %s", strlen(amount) - 1, amount, symbol);
+        snprintf(g_amount, sizeof(g_amount), "%.*s %s", strlen(amount) - 1, amount, zts_symbol);
         PRINTF("Amount: %s\n", g_amount);
 
         memset(g_address, 0, sizeof(g_address));
@@ -168,33 +112,95 @@ int ui_display_transaction() {
         }
         PRINTF("Address: %s\n", g_address);
 
-        // Start review
-        nbgl_useCaseReviewStart(&C_app_zenon_64px,
-                                "Review transaction\nto send",
-                                NULL,
-                                "Reject transaction",
-                                review_send_continue,
-                                ask_transaction_rejection_confirmation);
+        // Setup data to display
+        pairs[0].item = "Amount";
+        pairs[0].value = g_amount;
+        pairs[1].item = "Address";
+        pairs[1].value = g_address;
+
+        // Setup list
+        pairList.nbMaxLinesForValue = 0;
+        pairList.nbPairs = 2;
+        pairList.pairs = pairs;
+
+        char reviewTitle[35];
+        char signTitle[33];
+        snprintf(reviewTitle, sizeof(reviewTitle), "Review transaction\nto send %s\n", zts_name);
+        snprintf(signTitle, sizeof(signTitle), "Sign transaction\nto send %s\n", zts_name);
+
+        if (is_blind_signed) {
+            // Start blind-signing send flow
+            nbgl_useCaseReviewBlindSigning(TYPE_TRANSACTION,
+                                           &pairList,
+                                           &ICON_APP_ZENON,
+                                           reviewTitle,
+                                           NULL,
+                                           signTitle,
+                                           NULL,
+                                           review_choice);
+        } else {
+            // Start send flow
+            nbgl_useCaseReview(TYPE_TRANSACTION,
+                               &pairList,
+                               &ICON_APP_ZENON,
+                               reviewTitle,
+                               NULL,
+                               signTitle,
+                               review_choice);
+        }
     } else if (G_context.tx_info.transaction.blockType == 1 ||
                G_context.tx_info.transaction.blockType == 3 ||
                G_context.tx_info.transaction.blockType == 5) {
         // RECEIVE TX
         memset(g_hash, 0, sizeof(g_hash));
-        snprintf(g_hash, sizeof(g_hash), "0x%.*H", HASH_LEN, G_context.tx_info.m_hash);
+        if (format_hex(G_context.tx_info.m_hash, HASH_LEN, g_hash, sizeof(g_hash)) == -1) {
+            return io_send_sw(SW_DISPLAY_HASH_FAIL);
+        };
 
-        // Start review
-        nbgl_useCaseReviewStart(&C_app_zenon_64px,
-                                "Review transaction\nto receive",
-                                NULL,
-                                "Reject transaction",
-                                review_receive_continue,
-                                ask_transaction_rejection_confirmation);
+        // Setup data to display
+        pairs[0].item = "Hash";
+        pairs[0].value = g_hash;
+
+        // Setup list
+        pairList.nbMaxLinesForValue = 0;
+        pairList.nbPairs = 1;
+        pairList.pairs = pairs;
+
+        if (is_blind_signed) {
+            // Start blind-signing review flow
+            nbgl_useCaseReviewBlindSigning(TYPE_TRANSACTION,
+                                           &pairList,
+                                           &ICON_APP_ZENON,
+                                           "Review transaction\nto receive",
+                                           NULL,
+                                           "Sign transaction\nto receive",
+                                           NULL,
+                                           review_choice);
+        } else {
+            // Start review flow
+            nbgl_useCaseReview(TYPE_TRANSACTION,
+                               &pairList,
+                               &ICON_APP_ZENON,
+                               "Review transaction\nto receive",
+                               NULL,
+                               "Sign transaction\nto receive",
+                               review_choice);
+        }
     } else {
         // UNKNOWN TX
         return io_send_sw(SW_BAD_STATE);
     }
-
     return 0;
+}
+
+// Flow used to display a blind-signed transaction
+int ui_display_blind_signed_transaction(void) {
+    return ui_display_transaction_bs_choice(true);
+}
+
+// Flow used to display a clear-signed transaction
+int ui_display_transaction() {
+    return ui_display_transaction_bs_choice(false);
 }
 
 #endif

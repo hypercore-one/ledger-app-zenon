@@ -1,7 +1,7 @@
 
 /*****************************************************************************
  *   Ledger App Zenon.
- *   (c) 2023 Zenon Community.
+ *   (c) 2025 Zenon Community.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22,70 +22,46 @@
 #include "glyphs.h"
 #include "nbgl_use_case.h"
 
-#include "../globals.h"
+#include "globals.h"
 #include "menu.h"
+#include "display.h"
+
+//  -----------------------------------------------------------
+//  ----------------------- HOME PAGE -------------------------
+//  -----------------------------------------------------------
 
 void app_quit(void) {
     // exit app here
     os_sched_exit(-1);
 }
 
-// home page definition
-void ui_menu_main(void) {
-// This parameter shall be set to false if the settings page contains only information
-// about the application (version , developer name, ...). It shall be set to
-// true if the settings page also contains user configurable parameters related to the
-// operation of the application.
-#define SETTINGS_BUTTON_ENABLED (false)
-
-    nbgl_useCaseHome(APPNAME,
-                     &C_app_zenon_64px,
-                     NULL,
-                     SETTINGS_BUTTON_ENABLED,
-                     ui_menu_settings,
-                     app_quit);
-}
-
 //  -----------------------------------------------------------
 //  --------------------- SETTINGS MENU -----------------------
 //  -----------------------------------------------------------
-
-static const char* const INFO_TYPES[] = {"Version", "Developer"};
-static const char* const INFO_CONTENTS[] = {APPVERSION, "Zenon Community"};
+#define SETTING_INFO_NB 2
+static const char* const INFO_TYPES[SETTING_INFO_NB] = {"Version", "Developer"};
+static const char* const INFO_CONTENTS[SETTING_INFO_NB] = {APPVERSION, "Zenon Community"};
 
 // settings switches definitions
 enum { DUMMY_SWITCH_1_TOKEN = FIRST_USER_TOKEN, DUMMY_SWITCH_2_TOKEN };
 enum { DUMMY_SWITCH_1_ID = 0, DUMMY_SWITCH_2_ID, SETTINGS_SWITCHES_NB };
 
-static bool nav_callback(uint8_t page, nbgl_pageContent_t* content) {
-    UNUSED(page);
+static const nbgl_contentInfoList_t infoList = {
+    .nbInfos = SETTING_INFO_NB,
+    .infoTypes = INFO_TYPES,
+    .infoContents = INFO_CONTENTS,
+};
 
-    // the first settings page contains only the version and the developer name
-    // of the app (shall be always on the first setting page)
-    if (page == 0) {
-        content->type = INFOS_LIST;
-        content->infosList.nbInfos = 2;
-        content->infosList.infoTypes = INFO_TYPES;
-        content->infosList.infoContents = INFO_CONTENTS;
-    } else {
-        return false;
-    }
-    // valid page so return true
-    return true;
-}
-
-// settings menu definition
-void ui_menu_settings() {
-#define TOTAL_SETTINGS_PAGE  (1)
-#define INIT_SETTINGS_PAGE   (0)
-#define DISABLE_SUB_SETTINGS (false)
-    nbgl_useCaseSettings(APPNAME,
-                         INIT_SETTINGS_PAGE,
-                         TOTAL_SETTINGS_PAGE,
-                         DISABLE_SUB_SETTINGS,
-                         ui_menu_main,
-                         nav_callback,
-                         NULL);
+// home page definition
+void ui_menu_main(void) {
+    nbgl_useCaseHomeAndSettings(APPNAME,
+                                &ICON_APP_ZENON,
+                                NULL,
+                                INIT_HOME_PAGE,
+                                NULL,
+                                &infoList,
+                                NULL,
+                                app_quit);
 }
 
 #endif

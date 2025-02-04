@@ -1,6 +1,6 @@
 /*****************************************************************************
  *   Ledger App Zenon.
- *   (c) 2023 Zenon Community.
+ *   (c) 2025 Zenon Community.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,9 +17,6 @@
 
 #ifdef HAVE_NBGL
 
-#pragma GCC diagnostic ignored "-Wformat-invalid-specifier"  // snprintf
-#pragma GCC diagnostic ignored "-Wformat-extra-args"         // snprintf
-
 #include <stdbool.h>  // bool
 #include <string.h>   // memset
 
@@ -32,48 +29,27 @@
 
 #include "display.h"
 #include "constants.h"
-#include "../globals.h"
-#include "../sw.h"
-#include "../address.h"
-#include "action/validate.h"
-#include "../transaction/types.h"
-#include "../menu.h"
+#include "globals.h"
+#include "sw.h"
+#include "address.h"
+#include "validate.h"
+#include "tx_types.h"
+#include "menu.h"
 
 static char g_address[41];
 static char g_bip32_path[60];
 
-static nbgl_layoutTagValue_t pairs[1];
-static nbgl_layoutTagValueList_t pairList;
-
-static void confirm_address_rejection(void) {
-    // display a status page and go back to main
-    validate_pubkey(false);
-    nbgl_useCaseStatus("Address verification\ncancelled", false, ui_menu_main);
-}
-
-static void confirm_address_approval(void) {
-    // display a success status page and go back to main
-    validate_pubkey(true);
-    nbgl_useCaseStatus("ADDRESS\nVERIFIED", true, ui_menu_main);
-}
+static nbgl_contentTagValue_t pairs[1];
+static nbgl_contentTagValueList_t pairList;
 
 static void review_choice(bool confirm) {
+    // Answer, display a status page and go back to main
+    validate_pubkey(confirm);
     if (confirm) {
-        confirm_address_approval();
+        nbgl_useCaseReviewStatus(STATUS_TYPE_ADDRESS_VERIFIED, ui_menu_main);
     } else {
-        confirm_address_rejection();
+        nbgl_useCaseReviewStatus(STATUS_TYPE_ADDRESS_REJECTED, ui_menu_main);
     }
-}
-
-static void continue_review(void) {
-    // Fill pairs
-    pairs[0].item = "BIP32 Path";
-    pairs[0].value = g_bip32_path;
-
-    pairList.nbMaxLinesForValue = 0;
-    pairList.nbPairs = 1;
-    pairList.pairs = pairs;
-    nbgl_useCaseAddressConfirmationExt(g_address, review_choice, &pairList);
 }
 
 int ui_display_address() {
@@ -95,12 +71,21 @@ int ui_display_address() {
         return io_send_sw(SW_DISPLAY_ADDRESS_FAIL);
     }
 
-    nbgl_useCaseReviewStart(&C_app_zenon_64px,
-                            "Verify Zenon address",
-                            NULL,
-                            "Cancel",
-                            continue_review,
-                            confirm_address_rejection);
+    // Setup data to display
+    pairs[0].item = "Derivation path";
+    pairs[0].value = g_bip32_path;
+
+    // Setup list
+    pairList.nbMaxLinesForValue = 0;
+    pairList.nbPairs = 1;
+    pairList.pairs = pairs;
+
+    nbgl_useCaseAddressReview(g_address,
+                              &pairList,
+                              &ICON_APP_ZENON,
+                              "Verify Zenon address",
+                              NULL,
+                              review_choice);
     return 0;
 }
 
