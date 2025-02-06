@@ -1,6 +1,6 @@
 /*****************************************************************************
  *   Ledger App Zenon.
- *   (c) 2023 Zenon Community.
+ *   (c) 2025 Zenon Community.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23,10 +23,10 @@
 #include "buffer.h"
 
 #include "get_version.h"
-#include "../globals.h"
-#include "../constants.h"
-#include "../sw.h"
-#include "../types.h"
+#include "globals.h"
+#include "constants.h"
+#include "sw.h"
+#include "types.h"
 
 int handler_get_version() {
     _Static_assert(APPVERSION_LEN == 3, "Length of (MAJOR || MINOR || PATCH) must be 3!");

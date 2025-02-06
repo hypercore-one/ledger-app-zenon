@@ -1,6 +1,6 @@
 /*****************************************************************************
  *   Ledger App Zenon.
- *   (c) 2023 Zenon Community.
+ *   (c) 2025 Zenon Community.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21,10 +21,10 @@
 #include "buffer.h"
 
 #include "get_app_name.h"
-#include "../constants.h"
-#include "../globals.h"
-#include "../sw.h"
-#include "../types.h"
+#include "constants.h"
+#include "globals.h"
+#include "sw.h"
+#include "types.h"
 
 int handler_get_app_name() {
     _Static_assert(APPNAME_LEN < MAX_APPNAME_LEN, "APPNAME must be at most 64 characters!");

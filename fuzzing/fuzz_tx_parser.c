@@ -4,7 +4,7 @@
 #include <sys/types.h>
 
 #include "transaction/deserialize.h"
-#include "transaction/types.h"
+#include "transaction/tx_types.h"
 //#include "address.h"
 #include "token_standard.h"
 #include "bigint.h"
